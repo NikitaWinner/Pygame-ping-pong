@@ -16,6 +16,15 @@ def ball_animation():
         ball_speed_x *= -1
 
 
+def player_animation():
+    player.y += player_speed
+
+    if player.top <= 0:
+        player.top = 0
+    if player.bottom >= screen_height:
+        player.bottom = screen_height
+
+
 # Начальные настройки библиотеки PyGame
 pygame.init()
 clock = pygame.time.Clock()
@@ -37,15 +46,27 @@ opponent = pygame.Rect(10, screen_height / 2 - 70, 10, 140)
 
 ball_speed_x = 7
 ball_speed_y = 7
+player_speed = 0
 
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                player_speed -= 7
+            if event.key == pygame.K_DOWN:
+                player_speed += 7
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_UP:
+                player_speed += 7
+            if event.key == pygame.K_DOWN:
+                player_speed -= 7
 
     # Анимация мяча
     ball_animation()
+
     # Отрисовка спрайтов поля и спрайтов
     screen.fill(bg_color)
     pygame.draw.rect(screen, light_grey, player)
